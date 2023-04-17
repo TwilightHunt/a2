@@ -6,6 +6,7 @@
       v-for="input in inputs"
       :key="input.id"
       class="radio-fieldset__input__content"
+      :class="input.disabled ? '_disabled' : ''"
     >
       <input
         class="radio-fieldset__radio"
@@ -14,23 +15,34 @@
         :disabled="input.disabled"
       />
 
-      <a v-if="input.link === true" class="radio-fieldset__label" href="">
+      <a v-if="input.link === true" class="radio-fieldset__label_link" href="">
         {{ input.title }}
       </a>
-      <label v-if="input.link === undefined" class="radio-fieldset__label">{{
-        input.title
-      }}</label>
-      <input type="text" class="radio-fieldset__text-input" />
+      <label
+        v-if="input.link === undefined"
+        :class="`radio-fieldset__label ${input.disabled ? '_disabled' : ''}`"
+        >{{ input.title }}</label
+      >
+      <input
+        v-if="input.editable"
+        type="text"
+        @click.stop
+        class="radio-fieldset__text-input"
+      />
       <Info v-if="input.info" :text="input.info" class="radio-fieldset__info" />
-      <div @click="editField($this)" class="radio-fieldset__edit">
+      <div
+        v-if="input.editable"
+        class="radio-fieldset__edit"
+        @click.stop="editField"
+      >
         <font-awesome-icon
-          v-if="input.editable"
           icon="fa-solid fa-pen-to-square"
           style="color: #2dc574"
           size="xl"
-          class="radio-fieldset__edit"
+          class="radio-fieldset__edit-icon"
         />
       </div>
+
       <div v-if="input.dashed" class="dash"></div>
     </div>
   </form>
@@ -48,6 +60,7 @@ export default {
     Info,
   },
   methods: {
+    //Check current radio
     selectField(event) {
       const radio = event.target?.querySelector("#radio");
       if (!radio?.disabled) {
@@ -59,12 +72,12 @@ export default {
         radio?.classList?.add("_checked");
       }
     },
-    editField(el) {
-      console.log(el);
-      // event.target.parentNode.querySelector(
-      //   ".radio-fieldset__text-input"
-      // ).style.display = "block";
-      // event.target.style.display = "none";
+    // Showing the input in editable field
+    editField(event) {
+      event.target.parentNode.querySelector(
+        ".radio-fieldset__text-input"
+      ).style.display = "block";
+      event.target.style.display = "none";
     },
   },
 };
@@ -83,41 +96,52 @@ export default {
   padding: 15px 0;
   position: relative;
   cursor: pointer;
+  &._disabled {
+    cursor: default;
+    & > .radio-fieldset__label {
+      color: #ccc;
+    }
+  }
 }
 .radio-fieldset__radio {
   margin: 0;
-  margin-right: 3px;
+  margin-right: 5px;
   pointer-events: none;
   -webkit-appearance: none;
   appearance: none;
   background-color: #fff;
   color: var(--accent-color);
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid var(--accent-color);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent-color);
   border-radius: 50%;
   flex: 0 0 auto;
 }
 .radio-fieldset__radio::before {
   content: "";
   display: block;
-  width: 0.65em;
-  height: 0.65em;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  transform: translate(25%, 25%) scale(0);
+  transform: translate(20%, 20%) scale(0);
   transition: 120ms transform ease-in-out;
   box-shadow: inset 1em 1em var(--accent-color);
 }
 .radio-fieldset__radio._checked::before {
-  transform: translate(25%, 25%) scale(1);
+  transform: translate(20%, 20%) scale(1);
 }
 .radio-fieldset__radio:disabled {
   pointer-events: none;
   opacity: 0.5;
 }
-.radio-fieldset__info,
+.radio-fieldset__info {
+  margin-left: auto;
+}
 .radio-fieldset__edit {
   margin-left: auto;
+}
+.radio-fieldset__edit-icon {
+  pointer-events: none;
 }
 .radio-fieldset__label {
   font-size: 1.4rem;
@@ -127,12 +151,23 @@ export default {
   flex: 0 0 12rem;
   margin-right: 1rem;
   max-width: 12rem;
+  width: 100%;
+  white-space: nowrap;
+}
+.radio-fieldset__label_link {
+  font-size: 1.4rem;
+  font-weight: 500;
+  flex: 0 0 12rem;
+  margin-right: 1rem;
+  max-width: 12rem;
+  text-decoration: underline;
 }
 
 .dash {
   height: 1px;
   background-color: #ccc;
   position: absolute;
+  opacity: 0.5;
   top: 0;
   left: 0;
   right: 0;
@@ -152,5 +187,6 @@ a {
   line-height: 1.1;
   width: 100%;
   display: none;
+  max-width: 240px;
 }
 </style>

@@ -3,7 +3,7 @@
     <header class="settings__header">Настройки</header>
     <main class="settings__body">
       <section class="settings__section setting-sections__SIP">
-        <div class="setting-sections__title">Звонки через SIP</div>
+        <div class="setting-sections__title">Звонки через SIP <Slider /></div>
         <div class="settings-section__content">
           <div class="settings-section__content__description">
             Включите эту функцию чтобы Авито и другие площадки не блокировали
@@ -16,14 +16,18 @@
         <div class="setting-sections__title">Учётная запись</div>
         <div class="settings-section__content">
           <div class="settings-section__inputs">
-            <OneLineInput class="settings-section__input" label="Компания" />
-            <OneLineInput class="settings-section__input" label="Логин" />
-            <OneLineInput
+            <SettingsInput class="settings-section__input" label="Компания" />
+            <SettingsInput class="settings-section__input" label="Логин" />
+            <SettingsInput
               class="settings-section__input"
               label="Номер телефона"
             />
-            <OneLineInput class="settings-section__input" label="Имя" />
-            <OneLineInput class="settings-section__input" label="Фамилия" />
+            <SettingsInput class="settings-section__input" label="Имя" />
+            <SettingsInput
+              class="settings-section__input"
+              label="Фамилия"
+              info="*Не обязательно"
+            />
           </div>
         </div>
       </section>
@@ -34,7 +38,11 @@
             Выберите, куда будут приходить уведомления при появлении
             автомобилей, которые подходят под критерии вашей подборки.
           </div>
-          <RadioFieldset :inputs="notificationRadios" title="Уведомления" />
+          <RadioFieldset
+            class="settings-section__content__radio-fieldset"
+            :inputs="notificationRadios"
+            title="Уведомления"
+          />
         </div>
       </section>
       <section class="settings__section setting-sections__cards">
@@ -44,12 +52,27 @@
             Выберите, каким образом будет открываться детальное представление
             выбранного вами транспорта.
           </div>
-          <RadioFieldset :inputs="cardsRadios" />
+          <RadioFieldset
+            class="settings-section__content__radio-fieldset"
+            :inputs="cardsRadios"
+          />
         </div>
       </section>
       <section class="settings__section setting-sections__other">
         <div class="setting-sections__title">Прочие настройки</div>
         <div class="settings-section__content">
+          <div class="settings-section__content__select">
+            <div>Часовой пояс</div>
+            <Dropdown :options="times" />
+          </div>
+          <ChecboxField
+            text="Автоматически переходить к новым объявлениям"
+            info="Лента будет автоматически обновляться 1 раз в 3 секунды"
+          />
+          <ChecboxField
+            text="Включить цвета в ленте"
+            info="Включение зеленого/желтого цвета"
+          />
           <BaseButton>Сохранить</BaseButton>
         </div>
       </section>
@@ -58,54 +81,18 @@
 </template>
 
 <script setup>
-import OneLineInput from "../components/UI/inputs/OneLineInput.vue";
+import SettingsInput from "../components/UI/inputs/SettingsInput.vue";
 import BaseButton from "../components/UI/buttons/BaseButton.vue";
 import RadioFieldset from "../components/UI/inputs/RadioFieldset.vue";
+import Dropdown from "../components/UI/Dropdown.vue";
+import Slider from "../components/UI/Slider.vue";
+import ChecboxField from "../components/UI/CheckboxField.vue";
 
-const notificationRadios = [
-  {
-    id: 0,
-    title: "Выкл",
-  },
-  {
-    id: 1,
-    title: "Push",
-    disabled: true,
-    info: "Можно установить только в приложении",
-    dashed: true,
-  },
-  {
-    id: 2,
-    title: "Email",
-    editable: true,
-    dashed: true,
-  },
-  {
-    id: 3,
-    title: "Telegram ID",
-    editable: true,
-    link: true,
-    dashed: true,
-  },
-];
-
-const cardsRadios = [
-  {
-    id: 0,
-    title: "В карточку в текущем окне",
-  },
-  {
-    id: 1,
-    title: "В карточку в отдельном окне",
-    dashed: true,
-  },
-  {
-    id: 2,
-    title: "На источник ",
-    dashed: true,
-    info: "Прямой переход в объявление на источнике",
-  },
-];
+import {
+  notificationRadios,
+  cardsRadios,
+  times,
+} from "../composables/lists.js";
 </script>
 
 <style lang="scss" scoped>
@@ -135,6 +122,9 @@ const cardsRadios = [
   flex: 0 0 25rem;
   margin-right: 2rem;
   max-width: 25rem;
+  display: flex;
+  align-items: flex-start;
+  column-gap: 7px;
 }
 .settings-section__content {
   max-width: 49rem;
@@ -146,19 +136,28 @@ const cardsRadios = [
   color: #686869;
   line-height: 150%;
 }
-.setting-sections__account {
+.settings-section__content__select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  max-width: 37rem;
+  div {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-right: 25px;
+    margin-top: 4px;
+  }
 }
 .settings-section__input {
+  &.one-line-input > .input-high__input {
+    max-width: 240px;
+  }
   &:not(:last-child) {
     margin-bottom: 2rem;
   }
 }
-.setting-sections__notifications {
-}
-.settings-section__content__description {
-}
-.setting-sections__cards {
-}
-.setting-sections__other {
+.settings-section__content__radio-fieldset {
+  max-width: 37rem;
 }
 </style>

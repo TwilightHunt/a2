@@ -27,6 +27,7 @@ export default {
 .info {
   width: 20px;
   height: 20px;
+  position: relative;
 }
 .info__box {
   position: absolute;
