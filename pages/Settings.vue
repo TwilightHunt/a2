@@ -39,7 +39,7 @@
             автомобилей, которые подходят под критерии вашей подборки.
           </div>
           <RadioFieldset
-            class="settings-section__content__radio-fieldset"
+            class="settings-section__content__radio-fieldset radio-fieldset_notification"
             :inputs="notificationRadios"
             title="Уведомления"
           />
@@ -63,7 +63,11 @@
         <div class="settings-section__content">
           <div class="settings-section__content__select">
             <div>Часовой пояс</div>
-            <Dropdown :options="times" />
+            <Dropdown
+              @chooseItem="setUserCity"
+              :options="times"
+              :checked="useStore.city.title"
+            />
           </div>
           <ChecboxField
             text="Автоматически переходить к новым объявлениям"
@@ -73,6 +77,7 @@
             text="Включить цвета в ленте"
             info="Включение зеленого/желтого цвета"
           />
+          <div class="dash"></div>
           <BaseButton>Сохранить</BaseButton>
         </div>
       </section>
@@ -87,12 +92,18 @@ import RadioFieldset from "../components/UI/inputs/RadioFieldset.vue";
 import Dropdown from "../components/UI/Dropdown.vue";
 import Slider from "../components/UI/Slider.vue";
 import ChecboxField from "../components/UI/CheckboxField.vue";
-
+import { useUserStore } from "../store/user.js";
 import {
   notificationRadios,
   cardsRadios,
   times,
 } from "../composables/lists.js";
+
+const useStore = useUserStore();
+
+const setUserCity = (option) => {
+  useStore.city = option;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -130,6 +141,9 @@ import {
   max-width: 49rem;
   flex: 1 0 100%;
 }
+.radio-fieldset_notification {
+  margin-top: 20px;
+}
 .settings-section__content__description {
   font-size: 1.4rem;
   font-weight: 400;
@@ -159,5 +173,15 @@ import {
 }
 .settings-section__content__radio-fieldset {
   max-width: 37rem;
+}
+.dash {
+  height: 1px;
+  background-color: #ccc;
+  position: relative;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 30px 0 15px 0;
 }
 </style>

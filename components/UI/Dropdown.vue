@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown" @click="toggleExpand">
-    <div class="dropdown__content">Москва</div>
+    <div class="dropdown__content">{{ checked }}</div>
     <div v-if="isExpanded" class="dropdown__expand">
       <div v-for="option in options" class="dropdown__option">
         <div class="dropdown__option__body">
@@ -8,8 +8,9 @@
             class="dd-icon"
             icon="fa-solid fa-check"
             size="lg"
+            v-if="option.title === checked"
           />
-          <div>{{ option.title }}</div>
+          <div @click="$emit('chooseItem', option)">{{ option.title }}</div>
         </div>
       </div>
     </div>
@@ -26,6 +27,7 @@
 export default {
   props: {
     options: Array,
+    checked: String,
   },
   data() {
     return {
@@ -33,6 +35,7 @@ export default {
     };
   },
   methods: {
+    // open/close dropdown
     toggleExpand() {
       this.isExpanded = !this.isExpanded;
       this.$refs.arrow.classList.toggle("_rotated");
@@ -98,6 +101,7 @@ export default {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   max-height: 270px;
   overflow-y: auto;
+  z-index: 10;
 }
 .dropdown__option__body {
   position: relative;

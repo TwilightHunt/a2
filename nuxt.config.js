@@ -22,13 +22,22 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/fontawesome.js"],
+  plugins: [
+    "~/plugins/fontawesome.js",
+    "~/plugins/persistedstate.js",
+    "~/plugins/directives",
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ["@nuxtjs/composition-api/module", "@pinia/nuxt"],
+  buildModules: [
+    "@nuxtjs/composition-api/module",
+    "@pinia/nuxt",
+    "@nuxtjs/composition-api/module",
+    "@pinia/nuxt",
+  ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@pinia/nuxt", "@nuxtjs/axios"],

@@ -44,6 +44,7 @@ export default {
   font-weight: 700;
   border-radius: 3px;
   max-width: 350px;
+  min-width: 340px;
   text-align: center;
 
   &::before {

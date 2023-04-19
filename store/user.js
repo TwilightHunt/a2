@@ -1,7 +1,12 @@
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
-  state: () => ({ user: {}, loggedIn: false, token: "" }),
+  state: () => ({
+    user: {},
+    loggedIn: false,
+    token: "",
+    city: { title: "Москва" },
+  }),
   getters: {
     isAuthenticated: (state) => state.loggedIn,
     getUser: (state) => state.user,
@@ -14,4 +19,5 @@ export const useUserStore = defineStore("user", {
       this.user = user;
     },
   },
+  persist: true,
 });
