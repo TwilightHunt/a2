@@ -1,16 +1,27 @@
 <template>
   <div class="one-line-input">
     <label class="input-high__label" for="">{{ label }}</label>
-    <input class="input-high__input" />
+    <input class="input-high__input" :value="value" @input="updateValue" />
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    value: String,
     label: {
       type: String,
       required: true,
+    },
+  },
+  data() {
+    return {
+      content: this.value,
+    };
+  },
+  methods: {
+    updateValue(event) {
+      this.$emit("input", event.target.value);
     },
   },
 };

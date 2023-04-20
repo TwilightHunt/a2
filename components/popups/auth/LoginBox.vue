@@ -5,20 +5,22 @@
         class="auth-popup__fields__login auth-popup__fields__input"
         label="Логин"
         placeholder="Введите логин"
-        v-model="data.login"
+        v-model="login"
       />
       <HighInput
         class="auth-popup__fields__passwrod auth-popup__fields__input"
         label="Пароль"
         placeholder="Введите пароль"
         password
-        v-model="data.passwrod"
+        v-model="passwrod"
       />
       <a href="" class="auth-popup__fields__forgot-password">Забыли пароль?</a>
-      <div v-if="data.error" class="auth-popup__error">{{ data.error }}</div>
+      <div v-if="error" class="auth-popup__error">{{ error }}</div>
     </template>
     <template v-slot:footer>
-      <BaseButton @action="login" class="auth-popup__button">Войти</BaseButton>
+      <BaseButton @action="loginUser" class="auth-popup__button"
+        >Войти</BaseButton
+      >
       <div class="auth-popup__helper">
         Нет аккаунта?
         <a href="" @click.prevent="setActivePopup('RegisterBox')"
@@ -34,22 +36,30 @@ import AuthBox from "./AuthBox.vue";
 import HighInput from "../../UI/inputs/HighInput.vue";
 import BaseButton from "../../UI/buttons/BaseButton.vue";
 
-import { signIn } from "@/composables/useAuth.js";
 import usePopups from "@/composables/usePopups.js";
-import { reactive } from "vue";
 
 const { setActivePopup } = usePopups();
+</script>
 
-const data = reactive({
-  login: "",
-  passwrod: "",
-  error: "",
-});
-
-const login = async () => {
-  signIn({ login: data.login, password: data.passwrod }).catch(
-    (err) => (data.error = err)
-  );
+<script>
+import { signIn } from "@/composables/useAuth.js";
+export default {
+  data() {
+    return {
+      login: "",
+      passwrod: "",
+      error: "",
+    };
+  },
+  methods: {
+    async loginUser() {
+      signIn({ login: this.login, password: this.passwrod })
+        .then(() => {
+          this.$router.push({ path: "/settings" });
+        })
+        .catch((err) => (this.error = err));
+    },
+  },
 };
 </script>
 

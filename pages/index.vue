@@ -1,13 +1,11 @@
 <template>
   <div>
-    <!-- <component :is="popup ?? 'LoginBox'" /> -->
-    <Settings />
+    <component :is="popup ?? 'LoginBox'" />
   </div>
 </template>
 
 <script setup>
 import usePopups from "../composables/usePopups.js";
-import Settings from "./Settings.vue";
 
 const { popup } = usePopups();
 </script>

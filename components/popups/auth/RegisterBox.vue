@@ -5,10 +5,13 @@
         Введите номер телефона и получите доступ к системе на
         <b>2 часа</b>.
       </div>
-      <OneLineInput class="auth-popup__input" label="Телефон" />
+      <OneLineInput class="auth-popup__input" label="Телефон" v-model="phone" />
     </template>
     <template v-slot:footer>
-      <BaseButton class="auth-popup__button">Зарегистрироваться</BaseButton>
+      <div v-if="error" class="auth-popup__error">{{ error }}</div>
+      <BaseButton @action="register" class="auth-popup__button"
+        >Зарегистрироваться</BaseButton
+      >
       <div class="auth-popup__info">Повторная регистрация не допускается</div>
       <div class="auth-popup__helper">
         Уже есть аккаунт?
@@ -25,6 +28,28 @@ import usePopups from "../../../composables/usePopups.js";
 import BaseButton from "../../UI/buttons/BaseButton.vue";
 
 const { setActivePopup } = usePopups();
+</script>
+
+<script>
+import { signUp } from "../../../composables/useAuth";
+export default {
+  data() {
+    return {
+      phone: "",
+      error: "",
+    };
+  },
+  methods: {
+    async register() {
+      console.log(this.phone);
+      signUp(this.phone)
+        .then(() => {
+          this.$router.push({ path: "/settings" });
+        })
+        .catch((err) => (this.error = err));
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -57,5 +82,12 @@ const { setActivePopup } = usePopups();
   font-size: 1.2rem;
   text-align: center;
   margin-top: 5px;
+}
+.auth-popup__error {
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: center;
+  color: #e12f17;
+  margin: 3px 0;
 }
 </style>

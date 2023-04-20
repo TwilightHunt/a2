@@ -31,3 +31,34 @@ export const signIn = ({ login, password }) =>
       reject(error);
     }
   });
+
+export const signUp = (phoneNumber) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      if (!phoneNumber) {
+        throw new Error("Number is not specified");
+      }
+
+      const res = await axios.post(
+        "/register",
+        { login: phoneNumber },
+        {
+          headers: {
+            "X-Api-Key": "8bcfb6e1-4fa8-4fae-872c-a435bbdbe8d9",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const store = useUserStore();
+
+      store.setAuthToken(res.data.token);
+      store.setUser(res.data.user);
+
+      resolve(true);
+    } catch (error) {
+      if (error.response) {
+        reject(error.response.data.errors[0].title);
+      }
+      reject(error);
+    }
+  });

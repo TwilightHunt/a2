@@ -2,7 +2,11 @@
   <div class="dropdown" @click="toggleExpand">
     <div class="dropdown__content">{{ checked }}</div>
     <div v-if="isExpanded" class="dropdown__expand">
-      <div v-for="option in options" class="dropdown__option">
+      <div
+        v-for="option in options"
+        class="dropdown__option"
+        :key="option.title"
+      >
         <div class="dropdown__option__body">
           <font-awesome-icon
             class="dd-icon"
