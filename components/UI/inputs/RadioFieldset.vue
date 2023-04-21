@@ -28,6 +28,7 @@
         type="text"
         @click.stop
         class="radio-fieldset__text-input"
+        @change="$emit('onEdit')"
       />
       <Info v-if="input.info" :text="input.info" class="radio-fieldset__info" />
       <div
