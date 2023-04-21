@@ -32,7 +32,11 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ["@nuxtjs/composition-api/module", "@pinia/nuxt"],
+  buildModules: [
+    "@nuxtjs/composition-api/module",
+    "@pinia/nuxt",
+    "@nuxtjs/axios",
+  ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@pinia/nuxt", "@nuxtjs/axios"],
