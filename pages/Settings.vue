@@ -102,6 +102,7 @@ import {
 const useStore = useUserStore();
 
 const setUserCity = (option) => {
+  console.log(option);
   useStore.city = option;
 };
 </script>

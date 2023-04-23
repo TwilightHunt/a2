@@ -1,11 +1,16 @@
 <template>
   <div class="dropdown" @click="toggleExpand">
     <div class="dropdown__content">{{ checked }}</div>
-    <div v-if="isExpanded" class="dropdown__expand">
+    <div
+      v-if="isExpanded"
+      class="dropdown__expand"
+      v-click-outside="closeExpand"
+    >
       <div
         v-for="option in options"
         class="dropdown__option"
         :key="option.title"
+        @mouseup="$emit('chooseItem', option)"
       >
         <div class="dropdown__option__body">
           <font-awesome-icon
@@ -14,7 +19,7 @@
             size="lg"
             v-if="option.title === checked"
           />
-          <div @click="$emit('chooseItem', option)">{{ option.title }}</div>
+          <div>{{ option.title }}</div>
         </div>
       </div>
     </div>
@@ -43,6 +48,12 @@ export default {
     toggleExpand() {
       this.isExpanded = !this.isExpanded;
       this.$refs.arrow.classList.toggle("_rotated");
+    },
+    closeExpand(event) {
+      if (!event.target.className.includes("dropdown")) {
+        this.isExpanded = false;
+        this.$refs.arrow.classList.toggle("_rotated");
+      }
     },
   },
 };
