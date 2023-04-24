@@ -80,6 +80,10 @@ export default {
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.1;
+  &[type="password"] {
+    font-family: Verdana;
+    letter-spacing: 0.125em;
+  }
 }
 .input-high__icon {
   position: absolute;
