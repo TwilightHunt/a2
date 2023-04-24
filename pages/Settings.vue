@@ -44,6 +44,11 @@
             title="Уведомления"
             @selectField="setNotificationSetting"
             :checkedRadio="useStore.notification"
+            @updateEmail="
+              (data) => {
+                updateUser({ email: data });
+              }
+            "
           />
         </div>
       </section>
@@ -102,8 +107,14 @@ import {
   cardsRadios,
   times,
 } from "../composables/lists.js";
+import { update } from "../composables/useAuth";
+import { reactive } from "vue";
 
 const useStore = useUserStore();
+
+const data = reactive({
+  email: "",
+});
 
 const setUserCity = (option) => {
   useStore.city = option;
@@ -115,6 +126,10 @@ const setNotificationSetting = (id) => {
 
 const setCardSetting = (id) => {
   useStore.cardSetting = cardsRadios.find((el) => el.id === id);
+};
+
+const updateUser = async (data) => {
+  await update(data);
 };
 </script>
 

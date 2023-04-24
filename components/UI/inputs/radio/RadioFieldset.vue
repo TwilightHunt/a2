@@ -6,7 +6,8 @@
       :key="input.id"
       :input="input"
       @selectField="selectField"
-      :selected="!!(checkedRadio?.id === input.id)"
+      :selected="!!(checkedRadio.id === input.id)"
+      @onEdit="$emit(input.method)"
     />
   </form>
 </template>

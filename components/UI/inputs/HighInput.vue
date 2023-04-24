@@ -81,8 +81,12 @@ export default {
   font-weight: 500;
   line-height: 1.1;
   &[type="password"] {
-    font-family: Verdana;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     letter-spacing: 0.125em;
+    &::placeholder {
+      letter-spacing: initial;
+      font-family: Montserrat, Helvetica, Arial, sans-serif;
+    }
   }
 }
 .input-high__icon {

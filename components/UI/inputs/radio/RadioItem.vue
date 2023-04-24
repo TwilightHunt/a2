@@ -5,10 +5,11 @@
     :class="input.disabled ? '_disabled' : ''"
   >
     <input
-      :class="`radio-fieldset__radio ${selected ? '_checked' : ''}`"
+      class="radio-fieldset__radio"
       type="radio"
       id="radio"
       :disabled="input.disabled"
+      :checked="selected"
     />
     <a v-if="input.link === true" class="radio-fieldset__label_link" href="">
       {{ input.title }}
@@ -23,7 +24,7 @@
       type="text"
       @click.stop
       class="radio-fieldset__text-input"
-      @change="$emit('onEdit')"
+      @change="$emit('onEdit', $event.target.value)"
     />
     <Info v-if="input.info" :text="input.info" class="radio-fieldset__info" />
     <div
@@ -103,7 +104,7 @@ export default {
   transition: 120ms transform ease-in-out;
   box-shadow: inset 1em 1em var(--accent-color);
 }
-.radio-fieldset__radio._checked::before {
+.radio-fieldset__radio:checked::before {
   transform: translate(20%, 20%) scale(1);
 }
 .radio-fieldset__radio:disabled {

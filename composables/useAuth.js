@@ -62,3 +62,30 @@ export const signUp = (phoneNumber) =>
       reject(error);
     }
   });
+
+export const update = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const store = useUserStore();
+
+      await axios.put(
+        `/user/${store.user.id}`,
+        { ...store.user, ...data },
+        {
+          headers: {
+            "X-Api-Key": "8bcfb6e1-4fa8-4fae-872c-a435bbdbe8d9",
+            "X-User-Token": store.token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      resolve(true);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response);
+        reject(error.response.data.Message);
+      }
+      reject(error);
+    }
+  });

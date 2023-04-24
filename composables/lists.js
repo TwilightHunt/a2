@@ -15,6 +15,7 @@ export const notificationRadios = [
     title: "Email",
     editable: true,
     dashed: true,
+    method: "updateEmail",
   },
   {
     id: 3,
