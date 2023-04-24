@@ -1,78 +1,56 @@
 <template>
-  <form class="radio-fieldset">
-    <legend class="radio-fieldset__legend">{{ title }}</legend>
-    <div
-      @click.stop="selectField"
-      v-for="input in inputs"
-      :key="input.id"
-      class="radio-fieldset__input__content"
-      :class="input.disabled ? '_disabled' : ''"
+  <div
+    class="radio-fieldset__input__content"
+    @click.stop="$emit('selectField', input)"
+    :class="input.disabled ? '_disabled' : ''"
+  >
+    <input
+      :class="`radio-fieldset__radio ${selected ? '_checked' : ''}`"
+      type="radio"
+      id="radio"
+      :disabled="input.disabled"
+    />
+    <a v-if="input.link === true" class="radio-fieldset__label_link" href="">
+      {{ input.title }}
+    </a>
+    <label
+      v-if="input.link === undefined"
+      :class="`radio-fieldset__label ${input.disabled ? '_disabled' : ''}`"
+      >{{ input.title }}</label
     >
-      <input
-        class="radio-fieldset__radio"
-        type="radio"
-        id="radio"
-        :disabled="input.disabled"
+    <input
+      v-if="input.editable"
+      type="text"
+      @click.stop
+      class="radio-fieldset__text-input"
+      @change="$emit('onEdit')"
+    />
+    <Info v-if="input.info" :text="input.info" class="radio-fieldset__info" />
+    <div
+      v-if="input.editable"
+      class="radio-fieldset__edit"
+      @click.stop="editField"
+    >
+      <font-awesome-icon
+        icon="fa-solid fa-pen-to-square"
+        style="color: #2dc574"
+        size="xl"
+        class="radio-fieldset__edit-icon"
       />
-
-      <a v-if="input.link === true" class="radio-fieldset__label_link" href="">
-        {{ input.title }}
-      </a>
-      <label
-        v-if="input.link === undefined"
-        :class="`radio-fieldset__label ${input.disabled ? '_disabled' : ''}`"
-        >{{ input.title }}</label
-      >
-      <input
-        v-if="input.editable"
-        type="text"
-        @click.stop
-        class="radio-fieldset__text-input"
-        @change="$emit('onEdit')"
-      />
-      <Info v-if="input.info" :text="input.info" class="radio-fieldset__info" />
-      <div
-        v-if="input.editable"
-        class="radio-fieldset__edit"
-        @click.stop="editField"
-      >
-        <font-awesome-icon
-          icon="fa-solid fa-pen-to-square"
-          style="color: #2dc574"
-          size="xl"
-          class="radio-fieldset__edit-icon"
-        />
-      </div>
-
-      <div v-if="input.dashed" class="dash"></div>
     </div>
-  </form>
+
+    <div v-if="input.dashed" class="dash"></div>
+  </div>
 </template>
 
 <script>
-import Info from "../Info.vue";
+import Info from "../../Info.vue";
 export default {
   props: {
-    inputs: { type: Array, required: true },
-    title: String,
-  },
-
-  components: {
-    Info,
+    input: Object,
+    selected: Boolean,
   },
   methods: {
-    //Check current radio
-    selectField(event) {
-      const radio = event.target?.querySelector("#radio");
-      if (!radio?.disabled) {
-        event.target?.parentElement
-          ?.querySelectorAll("#radio")
-          ?.forEach((el) => {
-            el?.classList?.remove("_checked");
-          });
-        radio?.classList?.add("_checked");
-      }
-    },
     // Showing the input in editable field
     editField(event) {
       event.target.parentNode.querySelector(
@@ -81,16 +59,13 @@ export default {
       event.target.style.display = "none";
     },
   },
+  components: {
+    Info,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.radio-fieldset__legend {
-  margin-bottom: 2rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
 .radio-fieldset__input__content {
   display: flex;
   align-items: center;

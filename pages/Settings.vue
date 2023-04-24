@@ -42,6 +42,8 @@
             class="settings-section__content__radio-fieldset radio-fieldset_notification"
             :inputs="notificationRadios"
             title="Уведомления"
+            @selectField="setNotificationSetting"
+            :checkedRadio="useStore.notification"
           />
         </div>
       </section>
@@ -55,6 +57,8 @@
           <RadioFieldset
             class="settings-section__content__radio-fieldset"
             :inputs="cardsRadios"
+            @selectField="setCardSetting"
+            :checkedRadio="useStore.cardSetting"
           />
         </div>
       </section>
@@ -88,7 +92,7 @@
 <script setup>
 import SettingsInput from "../components/UI/inputs/SettingsInput.vue";
 import BaseButton from "../components/UI/buttons/BaseButton.vue";
-import RadioFieldset from "../components/UI/inputs/RadioFieldset.vue";
+import RadioFieldset from "../components/UI/inputs/radio/RadioFieldset.vue";
 import Dropdown from "../components/UI/Dropdown.vue";
 import Slider from "../components/UI/Slider.vue";
 import ChecboxField from "../components/UI/CheckboxField.vue";
@@ -102,8 +106,15 @@ import {
 const useStore = useUserStore();
 
 const setUserCity = (option) => {
-  console.log(option);
   useStore.city = option;
+};
+
+const setNotificationSetting = (id) => {
+  useStore.notification = notificationRadios.find((el) => el.id === id);
+};
+
+const setCardSetting = (id) => {
+  useStore.cardSetting = cardsRadios.find((el) => el.id === id);
 };
 </script>
 

@@ -6,6 +6,14 @@ export const useUserStore = defineStore("user", {
     loggedIn: false,
     token: "",
     city: { title: "Москва" },
+    notification: {
+      id: 0,
+      title: "Выкл",
+    },
+    cardSetting: {
+      id: 0,
+      title: "В карточку в текущем окне",
+    },
   }),
   getters: {
     isAuthenticated: (state) => state.loggedIn,
