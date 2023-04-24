@@ -3,11 +3,25 @@
     <label class="input-high__label" for="">{{ label }}</label>
     <input
       class="input-high__input"
-      :type="password ? 'password' : 'text'"
+      :type="password && !showPassword ? 'password' : 'text'"
       :placeholder="placeholder"
       :value="value"
       @input="updateValue"
     />
+    <div v-if="password" class="input-high__icon">
+      <font-awesome-icon
+        v-if="showPassword"
+        icon="fa-solid fa-eye-slash"
+        style="color: #000000"
+        @click="setPasswordVisibility(false)"
+      />
+      <font-awesome-icon
+        v-else
+        icon="fa-solid fa-eye"
+        style="color: #000000"
+        @click="setPasswordVisibility(true)"
+      />
+    </div>
   </div>
 </template>
 
@@ -28,11 +42,15 @@ export default {
   data() {
     return {
       content: this.value,
+      showPassword: false,
     };
   },
   methods: {
     updateValue(event) {
       this.$emit("input", event.target.value);
+    },
+    setPasswordVisibility(state) {
+      this.showPassword = state;
     },
   },
 };
@@ -42,6 +60,7 @@ export default {
 .input-high {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .input-high__label {
   color: #000;
@@ -61,5 +80,12 @@ export default {
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.1;
+}
+.input-high__icon {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(50%);
+  cursor: pointer;
 }
 </style>
